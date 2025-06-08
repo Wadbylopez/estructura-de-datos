@@ -1,0 +1,182 @@
+// Clase base abstracta para Figuras Geométricas, define una interfaz común
+// para calcular área y perímetro.
+public abstract class FiguraGeometrica {
+
+    // Método abstracto para calcular el área, debe ser implementado por las subclases.
+    public abstract double calcularArea();
+
+    // Método abstracto para calcular el perímetro, debe ser implementado por las subclases.
+    public abstract double calcularPerimetro();
+}
+
+// Clase Circulo: Representa un círculo y encapsula su radio.
+public class Circulo extends FiguraGeometrica {
+    // Atributo privado de tipo primitivo double para almacenar el radio del círculo.
+    private double radio;
+
+    /**
+     * Constructor de la clase Circulo.
+     * @param radio El radio del círculo.
+     */
+    public Circulo(double radio) {
+        // Asigna el valor del radio proporcionado al atributo de la clase.
+        this.radio = radio;
+    }
+
+    /**
+     * Obtiene el radio del círculo.
+     * @return El valor del radio del círculo.
+     */
+    public double getRadio() {
+        return radio;
+    }
+
+    /**
+     * Establece un nuevo valor para el radio del círculo.
+     * @param radio El nuevo radio a establecer.
+     */
+    public void setRadio(double radio) {
+        this.radio = radio;
+    }
+
+    /**
+     * Calcula el área del círculo.
+     * El área se calcula utilizando la fórmula: PI * radio^2.
+     * @return El área calculada del círculo.
+     */
+    @Override
+    public double calcularArea() {
+        return Math.PI * radio * radio;
+    }
+
+    /**
+     * Calcula el perímetro (circunferencia) del círculo.
+     * El perímetro se calcula utilizando la fórmula: 2 * PI * radio.
+     * @return El perímetro calculado del círculo.
+     */
+    @Override
+    public double calcularPerimetro() {
+        return 2 * Math.PI * radio;
+    }
+}
+
+// Clase Cuadrado: Representa un cuadrado y encapsula la longitud de su lado.
+public class Cuadrado extends FiguraGeometrica {
+    // Atributo privado de tipo primitivo double para almacenar la longitud del lado del cuadrado.
+    private double lado;
+
+    /**
+     * Constructor de la clase Cuadrado.
+     * @param lado La longitud del lado del cuadrado.
+     */
+    public Cuadrado(double lado) {
+        // Asigna el valor del lado proporcionado al atributo de la clase.
+        this.lado = lado;
+    }
+
+    /**
+     * Obtiene la longitud del lado del cuadrado.
+     * @return La longitud del lado del cuadrado.
+     */
+    public double getLado() {
+        return lado;
+    }
+
+    /**
+     * Establece una nueva longitud para el lado del cuadrado.
+     * @param lado La nueva longitud del lado a establecer.
+     */
+    public void setLado(double lado) {
+        this.lado = lado;
+    }
+
+    /**
+     * Calcula el área del cuadrado.
+     * El área se calcula utilizando la fórmula: lado * lado.
+     * @return El área calculada del cuadrado.
+     */
+    @Override
+    public double calcularArea() {
+        return lado * lado;
+    }
+
+    /**
+     * Calcula el perímetro del cuadrado.
+     * El perímetro se calcula utilizando la fórmula: 4 * lado.
+     * @return El perímetro calculado del cuadrado.
+     */
+    @Override
+    public double calcularPerimetro() {
+        return 4 * lado;
+    }
+}
+
+// Clase Rectangulo: Representa un rectángulo y encapsula su ancho y alto.
+public class Rectangulo extends FiguraGeometrica {
+    // Atributos privados de tipo primitivo double para almacenar el ancho y el alto del rectángulo.
+    private double ancho;
+    private double alto;
+
+    /**
+     * Constructor de la clase Rectangulo.
+     * @param ancho El ancho del rectángulo.
+     * @param alto El alto del rectángulo.
+     */
+    public Rectangulo(double ancho, double alto) {
+        // Asigna los valores de ancho y alto proporcionados a los atributos de la clase.
+        this.ancho = ancho;
+        this.alto = alto;
+    }
+
+    /**
+     * Obtiene el ancho del rectángulo.
+     * @return El valor del ancho del rectángulo.
+     */
+    public double getAncho() {
+        return ancho;
+    }
+
+    /**
+     * Establece un nuevo valor para el ancho del rectángulo.
+     * @param ancho El nuevo ancho a establecer.
+     */
+    public void setAncho(double ancho) {
+        this.ancho = ancho;
+    }
+
+    /**
+     * Obtiene el alto del rectángulo.
+     * @return El valor del alto del rectángulo.
+     */
+    public double getAlto() {
+        return alto;
+    }
+
+    /**
+     * Establece un nuevo valor para el alto del rectángulo.
+     * @param alto El nuevo alto a establecer.
+     */
+    public void setAlto(double alto) {
+        this.alto = alto;
+    }
+
+    /**
+     * Calcula el área del rectángulo.
+     * El área se calcula utilizando la fórmula: ancho * alto.
+     * @return El área calculada del rectángulo.
+     */
+    @Override
+    public double calcularArea() {
+        return ancho * alto;
+    }
+
+    /**
+     * Calcula el perímetro del rectángulo.
+     * El perímetro se calcula utilizando la fórmula: 2 * (ancho + alto).
+     * @return El perímetro calculado del rectángulo.
+     */
+    @Override
+    public double calcularPerimetro() {
+        return 2 * (ancho + alto);
+    }
+}
