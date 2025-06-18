@@ -1,0 +1,68 @@
+from datetime import datetime
+
+# Clase que representa un aporte individual
+class Aporte:
+    def __init__(self, empleado_id, nombre, monto, fecha):
+        self.empleado_id = empleado_id
+        self.nombre = nombre
+        self.monto = monto
+        self.fecha = fecha
+
+    def mostrar_aporte(self):
+        return f"ID: {self.empleado_id}, Nombre: {self.nombre}, Monto: ${self.monto:.2f}, Fecha: {self.fecha}"
+
+# Clase que gestiona todos los aportes
+class RegistroAportes:
+    def __init__(self):
+        self.aportes = []
+
+    def registrar_aporte(self, empleado_id, nombre, monto):
+        fecha = datetime.now().strftime("%Y-%m-%d")
+        nuevo_aporte = Aporte(empleado_id, nombre, monto, fecha)
+        self.aportes.append(nuevo_aporte)
+
+    def consultar_por_empleado(self, empleado_id):
+        return [a.mostrar_aporte() for a in self.aportes if a.empleado_id == empleado_id]
+
+    def ver_todos(self):
+        return [a.mostrar_aporte() for a in self.aportes]
+
+# Interfaz simple para probar el sistema
+def menu():
+    sistema = RegistroAportes()
+    while True:
+        print("\n=== MENÚ PRINCIPAL ===")
+        print("1. Registrar Aporte")
+        print("2. Consultar Aportes por Empleado")
+        print("3. Ver Todos los Aportes")
+        print("4. Salir")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            id_emp = input("ID del empleado: ")
+            nombre = input("Nombre del empleado: ")
+            monto = float(input("Monto del aporte: "))
+            sistema.registrar_aporte(id_emp, nombre, monto)
+            print("✔️ Aporte registrado con éxito.")
+
+        elif opcion == "2":
+            id_emp = input("Ingrese el ID del empleado: ")
+            resultados = sistema.consultar_por_empleado(id_emp)
+            if resultados:
+                for r in resultados:
+                    print(r)
+            else:
+                print("❌ No se encontraron aportes.")
+
+        elif opcion == "3":
+            for r in sistema.ver_todos():
+                print(r)
+
+        elif opcion == "4":
+            print("Saliendo del sistema...")
+            break
+        else:
+            print("❗ Opción inválida")
+
+menu()
