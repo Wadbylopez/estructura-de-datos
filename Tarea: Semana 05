@@ -1,0 +1,227 @@
+Ejericio 1 Escribir un programa que pregunte por una muestra de números, separados por comas, los guarde en una lista y muestre por pantalla su media y desviación típica.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace EstadisticasNumericas
+{
+    // Clase que encapsula el comportamiento estadístico
+    class Estadisticas
+    {
+        private List<double> numeros;
+
+        public Estadisticas(List<double> muestra)
+        {
+            numeros = muestra;
+        }
+
+        // Método para calcular la media
+        public double CalcularMedia()
+        {
+            return numeros.Average();
+        }
+
+        // Método para calcular la desviación típica
+        public double CalcularDesviacionTipica()
+        {
+            double media = CalcularMedia();
+            double sumaCuadrados = numeros.Sum(num => Math.Pow(num - media, 2));
+            return Math.Sqrt(sumaCuadrados / numeros.Count);
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Ingrese una lista de números separados por comas:");
+            string entrada = Console.ReadLine();
+
+            try
+            {
+                // Convierte la entrada en una lista de números
+                List<double> muestra = entrada
+                    .Split(',')
+                    .Select(s => double.Parse(s.Trim()))
+                    .ToList();
+
+                // Instancia del objeto estadístico
+                Estadisticas estadisticas = new Estadisticas(muestra);
+
+                // Cálculos
+                double media = estadisticas.CalcularMedia();
+                double desviacionTipica = estadisticas.CalcularDesviacionTipica();
+
+                // Resultados
+                Console.WriteLine($"\nMedia: {media:F2}");
+                Console.WriteLine($"Desviación Típica: {desviacionTipica:F2}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ha ocurrido un error al procesar los datos. Asegúrate de ingresar números válidos.");
+                Console.WriteLine($"Detalles técnicos: {ex.Message}");
+            }
+
+            Console.WriteLine("\nPresione una tecla para salir...");
+            Console.ReadKey();
+        }
+    }
+}
+
+Ejericio 2 Escribir un programa que almacene en una lista los siguientes precios, 50, 75, 46, 22, 80, 65, 8, y muestre por pantalla el menor y el mayor de los precios.using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace PreciosApp
+{
+    // Clase que se encarga de analizar la lista de precios
+    class AnalizadorPrecios
+    {
+        private List<int> precios;
+
+        public AnalizadorPrecios(List<int> listaPrecios)
+        {
+            precios = listaPrecios;
+        }
+
+        public int ObtenerPrecioMenor()
+        {
+            return precios.Min();
+        }
+
+        public int ObtenerPrecioMayor()
+        {
+            return precios.Max();
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Lista de precios predefinida
+            List<int> precios = new List<int> { 50, 75, 46, 22, 80, 65, 8 };
+
+            // Crear instancia del analizador
+            AnalizadorPrecios analizador = new AnalizadorPrecios(precios);
+
+            // Obtener menor y mayor
+ ejercicio 3 Escribir un programa que pida al usuario una palabra y muestre por pantalla el número de veces que contiene cada vocal.
+using System;
+using System.Collections.Generic;
+
+namespace ContadorDeVocales
+{
+    // Clase para contar vocales en una palabra
+    class ContadorVocales
+    {
+        private string palabra;
+
+        public ContadorVocales(string palabraUsuario)
+        {
+            palabra = palabraUsuario.ToLower();
+        }
+
+        // Método que cuenta las vocales y devuelve un diccionario
+        public Dictionary<char, int> ContarVocales()
+        {
+            Dictionary<char, int> conteo = new Dictionary<char, int>
+            {
+                {'a', 0},
+                {'e', 0},
+                {'i', 0},
+                {'o', 0},
+                {'u', 0}
+            };
+
+            foreach (char c in palabra)
+            {
+                if (conteo.ContainsKey(c))
+                {
+                    conteo[c]++;
+                }
+            }
+
+            return conteo;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Ingrese una palabra: ");
+            string palabraUsuario = Console.ReadLine();
+
+            ContadorVocales contador = new ContadorVocales(palabraUsuario);
+            var resultado = contador.ContarVocales();
+
+            Console.WriteLine("\nCantidad de cada vocal:");
+            foreach (var par in resultado)
+            {
+                Console.WriteLine($"{par.Key}: {par.Value}");
+            }
+
+            Console.WriteLine("\nPresione una tecla para salir...");
+            Console.ReadKey();
+        }
+    }
+}
+ Ejercicio 4 Escribir un programa que pregunte al usuario los números ganadores de la lotería primitiva, los almacene en una lista y los muestre por pantalla ordenados de menor a mayor.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Loteria
+{
+    // Clase que gestiona los números ganadores
+    class LoteriaPrimitiva
+    {
+        private List<int> numerosGanadores;
+
+        public LoteriaPrimitiva(string entrada)
+        {
+            numerosGanadores = entrada
+                .Split(',')
+                .Select(n => int.Parse(n.Trim()))
+                .ToList();
+        }
+
+        // Método que ordena los números
+        public void OrdenarNumeros()
+        {
+            numerosGanadores.Sort();
+        }
+
+        // Método para mostrar los números ordenados
+        public void MostrarNumeros()
+        {
+            Console.WriteLine("\nNúmeros ganadores ordenados de menor a mayor:");
+            Console.WriteLine(string.Join(", ", numerosGanadores));
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Ingrese los números ganadores de la lotería primitiva, separados por comas:");
+            string entrada = Console.ReadLine();
+
+            try
+            {
+                LoteriaPrimitiva loteria = new LoteriaPrimitiva(entrada);
+                loteria.OrdenarNumeros();
+                loteria.MostrarNumeros();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: Asegúrese de ingresar solo números válidos separados por comas.");
+                Console.WriteLine($"Detalles: {ex.Message}");
+            }
+
+            Console.WriteLine("\nPresione una tecla para salir...");
+            Console.ReadKey();
+        }
+    }
+}
