@@ -1,0 +1,237 @@
+Ejercicio1. Crear un programa que maneje N° cantidad de datos de tipo real en una lista. Una vez cargados los datos en lista, el programa debe calcular el promedio de todos los datos
+cargados. Posteriormente, el programa debe cargar los datos menores o igual al promedio en una segunda lista, y los mayores en una tercera lista. Al finalizar este proceso, el programa
+debe mostrar lo siguiente:
+a. Los datos cargados en la Los datos cargados en la lista principal. lista principal.
+b. El promedio.
+c. Los datos cuyo valor sea igual o menor al promedio de todos los datos.
+d. Los datos que sean mayores al promedio de todos los datos.
+#include <stdio.h>
+
+int main() {
+    int n, i;
+    float suma = 0, promedio;
+
+    printf("Ingrese la cantidad de datos: ");
+    scanf("%d", &n);
+
+    float datos[n];                // lista principal
+    float menores_igual[n];       // lista ≤ promedio
+    float mayores[n];             // lista > promedio
+    int cont_menores = 0, cont_mayores = 0;
+
+    // Cargar datos en la lista principal
+    printf("Ingrese los %d datos:\n", n);
+    for (i = 0; i < n; i++) {
+        printf("Dato %d: ", i + 1);
+        scanf("%f", &datos[i]);
+        suma += datos[i];
+    }
+
+    // Calcular el promedio
+    promedio = suma / n;
+
+    // Clasificar los datos
+    for (i = 0; i < n; i++) {
+        if (datos[i] <= promedio) {
+            menores_igual[cont_menores++] = datos[i];
+        } else {
+            mayores[cont_mayores++] = datos[i];
+        }
+    }
+
+    // Mostrar resultados
+    printf("\n--- Resultados ---\n");
+    printf("a) Datos cargados en la lista principal:\n");
+    for (i = 0; i < n; i++) {
+        printf("%.2f ", datos[i]);
+    }
+
+    printf("\n\nb) Promedio: %.2f\n", promedio);
+
+    printf("\nc) Datos <= promedio:\n");
+    for (i = 0; i < cont_menores; i++) {
+        printf("%.2f ", menores_igual[i]);
+    }
+
+    printf("\n\nd) Datos > promedio:\n");
+    for (i = 0; i < cont_mayores; i++) {
+        printf("%.2f ", mayores[i]);
+    }
+
+    printf("\n");
+
+    return 0;
+}
+
+
+Ejercicio 2: Crear un programa que Crear un programa que permita llevar el registro de permita llevar el registro de los vehículos del est los vehículos del estacionamiento del acionamiento del
+Área de Ingeniería de Sistemas de la Área de Ingeniería de Sistemas de la Universidad ut Universidad utilizando como estructura de ilizando como estructura de
+almacenamiento listas enlazadas. Los datos solicitados por cada vehículo son: placa,
+marca, modelo, año y marca, modelo, año y precio. El programa debe permi precio. El programa debe permitir realizar las sigu tir realizar las siguientes
+operaciones:
+a. Agregar vehículo.
+b. Buscar vehículo por placa.
+c. Ver vehículos por año.
+d. Ver todos los Ver todos los vehículos registrados. vehículos registrados.
+e. Eliminar carro registrado.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Estructura para el vehículo
+typedef struct Vehiculo {
+    char placa[20];
+    char marca[20];
+    char modelo[20];
+    int anio;
+    float precio;
+    struct Vehiculo *siguiente;
+} Vehiculo;
+
+// Puntero a la lista
+Vehiculo *inicio = NULL;
+
+// Función para agregar vehículo
+void agregarVehiculo() {
+    Vehiculo *nuevo = (Vehiculo*)malloc(sizeof(Vehiculo));
+
+    printf("Ingrese la placa: ");
+    scanf("%s", nuevo->placa);
+    printf("Ingrese la marca: ");
+    scanf("%s", nuevo->marca);
+    printf("Ingrese el modelo: ");
+    scanf("%s", nuevo->modelo);
+    printf("Ingrese el año: ");
+    scanf("%d", &nuevo->anio);
+    printf("Ingrese el precio: ");
+    scanf("%f", &nuevo->precio);
+
+    nuevo->siguiente = inicio;
+    inicio = nuevo;
+
+    printf("Vehículo agregado con éxito.\n");
+}
+
+// Función para buscar vehículo por placa
+void buscarPorPlaca() {
+    char placa[20];
+    printf("Ingrese la placa a buscar: ");
+    scanf("%s", placa);
+
+    Vehiculo *actual = inicio;
+    while (actual != NULL) {
+        if (strcmp(actual->placa, placa) == 0) {
+            printf("Vehículo encontrado:\n");
+            printf("Placa: %s\n", actual->placa);
+            printf("Marca: %s\n", actual->marca);
+            printf("Modelo: %s\n", actual->modelo);
+            printf("Año: %d\n", actual->anio);
+            printf("Precio: %.2f\n", actual->precio);
+            return;
+        }
+        actual = actual->siguiente;
+    }
+    printf("Vehículo no encontrado.\n");
+}
+
+// Función para ver vehículos por año
+void verPorAnio() {
+    int anio;
+    int encontrados = 0;
+    printf("Ingrese el año a buscar: ");
+    scanf("%d", &anio);
+
+    Vehiculo *actual = inicio;
+    while (actual != NULL) {
+        if (actual->anio == anio) {
+            printf("\nPlaca: %s | Marca: %s | Modelo: %s | Año: %d | Precio: %.2f",
+                actual->placa, actual->marca, actual->modelo, actual->anio, actual->precio);
+            encontrados = 1;
+        }
+        actual = actual->siguiente;
+    }
+    if (!encontrados) {
+        printf("No se encontraron vehículos del año %d.\n", anio);
+    } else {
+        printf("\n");
+    }
+}
+
+// Función para ver todos los vehículos
+void verTodos() {
+    if (inicio == NULL) {
+        printf("No hay vehículos registrados.\n");
+        return;
+    }
+
+    Vehiculo *actual = inicio;
+    printf("\n--- Vehículos Registrados ---\n");
+    while (actual != NULL) {
+        printf("Placa: %s | Marca: %s | Modelo: %s | Año: %d | Precio: %.2f\n",
+            actual->placa, actual->marca, actual->modelo, actual->anio, actual->precio);
+        actual = actual->siguiente;
+    }
+}
+
+// Función para eliminar vehículo por placa
+void eliminarVehiculo() {
+    char placa[20];
+    printf("Ingrese la placa del vehículo a eliminar: ");
+    scanf("%s", placa);
+
+    Vehiculo *actual = inicio;
+    Vehiculo *anterior = NULL;
+
+    while (actual != NULL) {
+        if (strcmp(actual->placa, placa) == 0) {
+            if (anterior == NULL) {
+                inicio = actual->siguiente;
+            } else {
+                anterior->siguiente = actual->siguiente;
+            }
+            free(actual);
+            printf("Vehículo eliminado con éxito.\n");
+            return;
+        }
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+    printf("Vehículo no encontrado.\n");
+}
+
+// Menú principal
+int main() {
+    int opcion;
+
+    do {
+        printf("\n--- Menú Estacionamiento Área de Ingeniería de Sistemas ---\n");
+        printf("1. Agregar vehículo\n");
+        printf("2. Buscar vehículo por placa\n");
+        printf("3. Ver vehículos por año\n");
+        printf("4. Ver todos los vehículos\n");
+        printf("5. Eliminar vehículo\n");
+        printf("6. Salir\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1: agregarVehiculo(); break;
+            case 2: buscarPorPlaca(); break;
+            case 3: verPorAnio(); break;
+            case 4: verTodos(); break;
+            case 5: eliminarVehiculo(); break;
+            case 6: printf("Saliendo...\n"); break;
+            default: printf("Opción no válida.\n"); break;
+        }
+    } while (opcion != 6);
+
+    // Liberar memoria
+    Vehiculo *actual = inicio;
+    while (actual != NULL) {
+        Vehiculo *temp = actual;
+        actual = actual->siguiente;
+        free(temp);
+    }
+
+    return 0;
+}
