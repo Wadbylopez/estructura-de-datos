@@ -1,0 +1,87 @@
+Verificación de paréntesis balanceados en una expresión matemática
+import java.util.Stack;
+
+public class Balanceo {
+    public static void main(String[] args) {
+        String expresion = "{7 + (8 * 5) - [(9 - 7) + (4 + 1)]}";
+
+        if (estaBalanceada(expresion)) {
+            System.out.println("Fórmula balanceada.");
+        } else {
+            System.out.println("Fórmula no balanceada.");
+        }
+    }
+
+    public static boolean estaBalanceada(String expr) {
+        Stack<Character> pila = new Stack<>();
+
+        for (char c : expr.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                pila.push(c);
+            } else if (c == ')' || c == '}' || c == ']') {
+                if (pila.isEmpty()) return false;
+
+                char tope = pila.pop();
+                if (!coinciden(tope, c)) return false;
+            }
+        }
+
+        return pila.isEmpty();
+    }
+
+    private static boolean coinciden(char apertura, char cierre) {
+        return (apertura == '(' && cierre == ')') ||
+               (apertura == '{' && cierre == '}') ||
+               (apertura == '[' && cierre == ']');
+    }
+}
+
+Resolución del problema de las Torres de Hanoi
+import java.util.Stack;
+
+public class TorresDeHanoi {
+    static Stack<Integer> origen = new Stack<>();
+    static Stack<Integer> auxiliar = new Stack<>();
+    static Stack<Integer> destino = new Stack<>();
+
+    public static void main(String[] args) {
+        int n = 3; // número de discos
+
+        // Inicializar torre de origen
+        for (int i = n; i >= 1; i--) {
+            origen.push(i);
+        }
+
+        System.out.println("Estado inicial:");
+        imprimirTorres();
+        moverDiscos(n, origen, destino, auxiliar, "Origen", "Destino", "Auxiliar");
+    }
+
+    public static void moverDiscos(int n, Stack<Integer> origen, Stack<Integer> destino, Stack<Integer> auxiliar,
+                                   String nombreOrigen, String nombreDestino, String nombreAuxiliar) {
+        if (n == 1) {
+            int disco = origen.pop();
+            destino.push(disco);
+            System.out.println("Mover disco " + disco + " de " + nombreOrigen + " a " + nombreDestino);
+            imprimirTorres();
+            return;
+        }
+
+        moverDiscos(n - 1, origen, auxiliar, destino, nombreOrigen, nombreAuxiliar, nombreDestino);
+
+        int disco = origen.pop();
+        destino.push(disco);
+        System.out.println("Mover disco " + disco + " de " + nombreOrigen + " a " + nombreDestino);
+        imprimirTorres();
+
+        moverDiscos(n - 1, auxiliar, destino, origen, nombreAuxiliar, nombreDestino, nombreOrigen);
+    }
+
+    public static void imprimirTorres() {
+        System.out.println("Origen:   " + origen);
+        System.out.println("Auxiliar: " + auxiliar);
+        System.out.println("Destino:  " + destino);
+        System.out.println("----------------------------");
+    }
+}
+
