@@ -1,0 +1,120 @@
+using System;
+using System.Collections.Generic;
+
+namespace AsignacionAuditorio
+{
+    // Clase que representa un asistente
+    public class Asistente
+    {
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+        public int AsientoAsignado { get; set; }
+
+        public Asistente(int id, string nombre)
+        {
+            Id = id;
+            Nombre = nombre;
+            AsientoAsignado = -1; // Aún no asignado
+        }
+
+        public override string ToString()
+        {
+            return $"ID: {Id}, Nombre: {Nombre}, Asiento: {(AsientoAsignado == -1 ? "No asignado" : AsientoAsignado.ToString())}";
+        }
+    }
+
+    // Clase para la asignación de asientos con dos registradores
+    public class Auditorio
+    {
+        private const int TotalAsientos = 100;
+        private int siguienteAsiento = 1; // Número de siguiente asiento disponible
+
+        private Queue<Asistente> colaRegistrador1 = new Queue<Asistente>();
+        private Queue<Asistente> colaRegistrador2 = new Queue<Asistente>();
+
+        private List<Asistente> asistentesAsignados = new List<Asistente>();
+
+        // Registrar asistentes en las dos colas simulando dos personas registradoras
+        public void RegistrarAsistente(Asistente asistente, int registrador)
+        {
+            if (siguienteAsiento > TotalAsientos)
+            {
+                Console.WriteLine("No quedan asientos disponibles.");
+                return;
+            }
+
+            if (registrador == 1)
+                colaRegistrador1.Enqueue(asistente);
+            else if (registrador == 2)
+                colaRegistrador2.Enqueue(asistente);
+            else
+                Console.WriteLine("Registrador inválido. Debe ser 1 o 2.");
+        }
+
+        // Asignar asientos en orden de llegada real (simulado alternando colas)
+        public void AsignarAsientos()
+        {
+            while ((colaRegistrador1.Count > 0 || colaRegistrador2.Count > 0) && siguienteAsiento <= TotalAsientos)
+            {
+                if (colaRegistrador1.Count > 0)
+                {
+                    Asistente a1 = colaRegistrador1.Dequeue();
+                    a1.AsientoAsignado = siguienteAsiento++;
+                    asistentesAsignados.Add(a1);
+                }
+
+                if (colaRegistrador2.Count > 0 && siguienteAsiento <= TotalAsientos)
+                {
+                    Asistente a2 = colaRegistrador2.Dequeue();
+                    a2.AsientoAsignado = siguienteAsiento++;
+                    asistentesAsignados.Add(a2);
+                }
+            }
+        }
+
+        // Reporte de asistentes asignados
+        public void MostrarAsignados()
+        {
+            Console.WriteLine("\n--- Asistentes con asientos asignados ---");
+            foreach (var a in asistentesAsignados)
+            {
+                Console.WriteLine(a);
+            }
+        }
+
+        // Reporte de asistentes en cola (sin asiento asignado)
+        public void MostrarColas()
+        {
+            Console.WriteLine("\nCola Registrador 1:");
+            foreach (var a in colaRegistrador1)
+                Console.WriteLine(a);
+
+            Console.WriteLine("\nCola Registrador 2:");
+            foreach (var a in colaRegistrador2)
+                Console.WriteLine(a);
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Auditorio auditorio = new Auditorio();
+
+            // Simulación: 50 asistentes para cada registrador
+            for (int i = 1; i <= 50; i++)
+            {
+                auditorio.RegistrarAsistente(new Asistente(i, $"Asistente_{i}"), 1);
+                auditorio.RegistrarAsistente(new Asistente(i + 50, $"Asistente_{i + 50}"), 2);
+            }
+
+            auditorio.MostrarColas();
+
+            auditorio.AsignarAsientos();
+
+            auditorio.MostrarAsignados();
+
+            Console.WriteLine("\nProceso terminado.");
+        }
+    }
+}
